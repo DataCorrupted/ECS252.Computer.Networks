@@ -1,0 +1,30 @@
+
+\section*{Problem 2}
+
+\begin{enumerate}
+    \item A $P$ bit packet is to be transported over $L$ store-and-forward links; $d_l$ and $C_l$ are the propagation
+          delay and bit rate, respectively, on link $l$.
+          Assuming zero queueing and processing delays on the links, derive an expression for the end-to-end delay given that $H$ is the number of header bits in a packet.
+    \item If an $M$ bit file is to be transmitted as $K$ packets and if $C_l = C$ for all $l$, find the expression for the end-to-end file transfer time.
+    \item Discuss the tradeoff in choosing $K$ and find the $K$ that minimizes the end-to-end file transfer delay.
+\end{enumerate}
+
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item $ \sum_{k=1}^L \frac{(P+H)}{C_k} + d_k $
+    \item $ \frac{L(M/K + H)}{C} + \sum_{k=1}^L d_k + \frac{(M-1)(M/K + H)}{C}$
+    \item Let's denote total time $t(K)$
+
+          \begin{align*}
+              t(K) = & \frac{L(M/K + H)}{C} + \sum_{k=1}^L d_k + \frac{(K-1)(M/K + H)}{C} \\
+              =      & \frac{LM - M}{C}\frac{1}{K} + \frac{H}{C}K + \text{constant}       \\
+              \ge    & 2\sqrt{\frac{(L-1)MH}{C^2}}
+          \end{align*}
+
+          The equality, i.e. the minimum, is taken when $K = \sqrt{\frac{(L-1)MH}{C^2}}$
+
+          When $K$ is small, single packet is large, thus the time cost for waiting one frame in a store-and-forward link is increased($(L-1)M/CK$).
+
+          However, when $K$ is large, although the waiting time in the links are dropped, the overhead incurred by the packet heading is increased($HK/C$).
+\end{enumerate}

@@ -1,0 +1,24 @@
+
+\section*{Problem 3}
+
+In this problem we will work through the idea of statistical multiplexing that we discussed in class.
+Nodes are connected to a switch using high-bandwidth links, i.e., the links between the nodes and the switch are not
+limiting.
+The outgoing link form the switch is $M$ Mbps.
+Consider that each node is active with probability $p$ and when it is active it transmits data at $R$ Kbps.
+We define congestion when the instantaneous rate is greater than the link rate.
+Write a code (Matlab, R, or Python) to answer the following questions.
+
+\begin{enumerate}
+      \item Assume that $M = 1$ Mbps, $R = 200$ Kbps, and $p = 0.2$.
+            Plot the probability of congestion $P_c$ as a
+            function of $N$.
+      \item Repeat the previous case with $M = 1$ Mbps, $R = 800$ Kbps, and $p = 0.01$.
+      \item Here we turn the problem around to answer a capacity estimation problem.
+            We are given that $N = 20$,
+            $R = 200$ Kbps, and $p = 0.2$.
+            We are also given that the allowed probability of congestion $P_c$ is $0.1$.
+            Rework the code in part (1) to find the minimum value of $M$ that is needed.
+\end{enumerate}
+
+\subsection*{Solution}

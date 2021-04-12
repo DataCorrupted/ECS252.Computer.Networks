@@ -1,0 +1,16 @@
+
+\section*{Problem 1}
+
+Consider sending a file of $F = M * L$ bits over a path of $Q$ links.
+A link at $i$-th position along the path transmits at $i * R$ bps, e.g., the last link before the destination transmits at $Q * R$ bps.
+The network is lightly loaded so that there are no queuing delays.
+In order to send the file on a packet-switched network, its $M * L$ bits are broken up into $M$ packets, each packet with $L$ bits.
+Also, suppose the network layers add a total of h bits of header to each packet.
+How long does it take to send the file from source to destination?
+Assume that the propagation delay is negligible.
+
+\subsection*{Solution}
+
+Since the smallest bandwidth of the path is the first link with $R$ bps, the total time would be:
+
+$$ M(L+h)/R + \sum_{k=2}^Q (L+h)/kR $$

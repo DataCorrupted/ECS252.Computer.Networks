@@ -15,10 +15,58 @@ Write a code (Matlab, R, or Python) to answer the following questions.
             function of $N$.
       \item Repeat the previous case with $M = 1$ Mbps, $R = 800$ Kbps, and $p = 0.01$.
       \item Here we turn the problem around to answer a capacity estimation problem.
-            We are given that $N = 20$,
-            $R = 200$ Kbps, and $p = 0.2$.
+            We are given that $N = 20$, $R = 200$ Kbps, and $p = 0.2$.
             We are also given that the allowed probability of congestion $P_c$ is $0.1$.
             Rework the code in part (1) to find the minimum value of $M$ that is needed.
 \end{enumerate}
 
 \subsection*{Solution}
+
+Let's denote $N_M = \lfloor M / R \rfloor$.
+$N_M$ describes the critical number of devices in the network below which there will never be a congestion.
+\[
+      P_c(N) = \left\{ \begin{array}{ll}
+            0                                                      & N \le N_M \\
+            1 - \sum_{k=0}^{N_M} {{N} \choose {k}} p^k (1-p)^{N-k} & N > N_M   \\
+      \end{array}
+      \right.
+\]
+
+\begin{figure}[h]
+      \centering
+      \begin{tikzpicture}
+            \begin{axis}[
+                        title={$P_C(N)$ given $M=1000, R=200, p=0.2$},
+                        xlabel={$N$},
+                        ylabel={$P_c(N)$},
+                        legend pos=south east,
+                        ymajorgrids=true,
+                        grid style=dashed,
+                  ]
+                  \addplot[red] table [x=N, y=Pc, col sep=comma] {plots/Q3.Pc_N_1000_200_0.2.csv};
+            \end{axis}
+      \end{tikzpicture}
+\end{figure}
+\begin{figure}[h]
+      \centering
+      \begin{tikzpicture}
+            \begin{axis}[
+                        title={$P_C(N)$ given $M=1000, R=800, p=0.01$},
+                        xlabel={$N$},
+                        ylabel={$P_c(N)$},
+                        legend pos=south east,
+                        ymajorgrids=true,
+                        grid style=dashed,
+                  ]
+                  \addplot[red] table [x=N, y=Pc, col sep=comma] {plots/Q3.Pc_N_1000_800_0.01.csv};
+            \end{axis}
+      \end{tikzpicture}
+\end{figure}
+
+Using binary search we can easily get $M$ should at least be 1199 Kbps
+
+The code that is used to generated the graph and the binary search is attached:
+
+\begin{minipage}{\linewidth}
+      \lstinputlisting[language=Python]{src/q3.py}
+\end{minipage}

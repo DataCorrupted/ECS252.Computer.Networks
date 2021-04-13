@@ -2,3 +2,4 @@
 !*/*.tex
 !*/Makefile
 */__*
+*/src/__pycache__

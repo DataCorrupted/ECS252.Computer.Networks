@@ -6,3 +6,20 @@ word review.
 You will find the paper in the reference section in Canvas.
 
 \subsection*{Solution}
+
+
+This paper discussed architectural issues in current(back in 1994) network designs.
+The motivation is that currently, the network provides a ``best-effort'' service.
+This has been working good given that the applications are mainly data use.
+However, such a weak guarantee is becoming a problem for more advanced web applications like voice/video streaming, where latency and bandwidth are problems.
+The author argued that although we have solutions to this: by changing the router and application implementation with certain advantages, lack of admission control will be a problem.
+Therefore, the author uses the rest of the paper to argue that the architecture needs to change and how.
+
+Section III first clarified the ultimate goal of the change: ``maximize the performance of the resident applications.''
+Further, Section IV argues that although you can achieve this goal using larger bandwidth and shorter latency, it is not enough, at least not as good as providing more services than just ``best-effort''.
+Established that we need more services, the next question is how to decide which service to use(Sec V). The author gives two options: either implicitly supplied or explicitly requested.
+Certain services like bounded delay provide ``quantitative characterizations'', and thus an admission control is required; section VI discussed the details.
+
+In conclusion, the paper argues that there should be more service models than simply ``best-effort''.
+With the applications requesting service explicitly and including admission control, there are still many unsolved design problems.
+The author also acknowledges that the discussion is limited to the Internet, yet tele-commuication is not addressed.

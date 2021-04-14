@@ -1,11 +1,74 @@
 
 \section*{Problem 5}
 In this problem we will consider that the buffer size of the single server queue studied in the lecture is finite and is of size $B$.
-We still consider that the arrival process follows a Poisson process with rate $\lambda$ packets/second and the service time is negative exponentially distributed with rate $\mu$ packets/seconf.
+We still consider that the arrival process follows a Poisson process with rate $\lambda$ packets/second and the service time is negative exponentially distributed with rate $\mu$ packets/second.
 
 \begin{enumerate}
     \item Derive an expression for the packet drop probability?
-    \item Modify simulation code to simulate a finite buffer queuing system and validate simulation by comparing the simulation and the theoretical results. Consider $\mu = 1$. Use $B = 1, 10, 50$ and $\lambda = 0.1, 0.4, 0.8, 0.9$
+    \item Modify simulation code to simulate a finite buffer queuing system and validate simulation by comparing the simulation and the theoretical results.
+          Consider $\mu = 1$. Use $B = 1, 10, 50$ and $\lambda = 0.1, 0.4, 0.8, 0.9$
 \end{enumerate}
 
 \subsection*{Solution}
+
+\begin{enumerate}
+    \item We would use Markov chain to try address this.
+
+          Suppose state $S_k$ represents there are $k$ packets in the system.
+          Thus $0 \le k \le B+1$.
+
+          Therefore, $\lambda P_k = \mu P_{k+1} \Rightarrow P_k = \rho^k P_0$, however:
+
+          $$ \sum P_k
+              =  P_0(\rho^0 + \rho^1 + \cdots + \rho^{B+1})
+              =  P_0 \frac{1 - \rho^{B+2}}{1-\rho} = 1 $$
+          $$P_0 = \frac{1-\rho}{1 - \rho^{B+2}}$$
+          $$P_k = \frac{1-\rho}{1 - \rho^{B+2}} \rho^{k}$$
+
+          Now let's consider the probability of dropping packets.
+          Since packets arriving and systems states are independ, we have:
+          $$P = P(P_{B+1} | Arriving) = \frac{P_{B+1} P_{Arriving}}{P_{Arriving}} = P_{B+1} = \frac{1-\rho}{1 - \rho^{B+2}} \rho^{B+1}$$
+
+    \item
+          \begin{table}[t]
+              \centering
+              \caption{
+                  Simulation of a finite buffer queuing system given $\mu = 1$.
+                  It can be seen that using different $\lambda$ and $B$, the theoretical value and simulation value fits perfectly.
+              }
+              \begin{tabular}{rrrrrr}
+                  \toprule
+
+                  \multicolumn{1}{l}{Lambda($\lambda$)} &
+                  \multicolumn{1}{l}{Max Len($B$)}      &
+                  \multicolumn{1}{l}{\# Arrived}        &
+                  \multicolumn{1}{l}{\# Dropped}        &
+                  \multicolumn{1}{l}{Drop Rate}         &
+                  \multicolumn{1}{l}{Theoretical}                                                \\
+
+                  \midrule
+
+                  \multicolumn{1}{l}{0.100}             & 1  & 9969  & 89    & 0.00893 & 0.00901 \\
+                                                        & 10 & 10006 & 0     & 0.00000 & 0.00000 \\
+                                                        & 50 & 9799  & 0     & 0.00000 & 0.00000 \\
+                  \midrule
+                  \multicolumn{1}{l}{0.400}             & 1  & 40397 & 4098  & 0.10144 & 0.10256 \\
+                                                        & 10 & 40139 & 0     & 0.00000 & 0.00003 \\
+                                                        & 50 & 40009 & 0     & 0.00000 & 0.00000 \\
+                  \midrule
+                  \multicolumn{1}{l}{0.800}             & 1  & 79793 & 20862 & 0.26145 & 0.26230 \\
+                                                        & 10 & 79929 & 1485  & 0.01858 & 0.01845 \\
+                                                        & 50 & 79604 & 0     & 0.00000 & 0.00000 \\
+                  \midrule
+                  \multicolumn{1}{l}{0.900}             & 1  & 89649 & 26640 & 0.29716 & 0.29889 \\
+                                                        & 10 & 89790 & 3656  & 0.04072 & 0.04373 \\
+                                                        & 50 & 89789 & 29    & 0.00032 & 0.00047 \\
+                  \bottomrule
+              \end{tabular}
+          \end{table}
+
+          The modified simulation code is too large.
+          Even showing the diff would be difficult.
+          In case you want to examine the source code, please contact me.
+
+\end{enumerate}

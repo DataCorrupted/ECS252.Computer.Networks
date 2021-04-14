@@ -2,11 +2,38 @@
 \section*{Problem 6}
 
 In the circuit switched world the basic unit of multiplexing was a T1 circuit which has a capacity of $1.544$
-Mpbs and it could support 24 voice calls each at 64 Kbps.
-Consider a T1 circuit, a call holding time that is negatively exponentially distributed with mean call holding time of 180 seconds (the rate parameter µ of
-the exponential distribution is $1/180$.
+Mpbs and it could support 24 voice calls each at $64$ Kbps.
+Consider a T1 circuit, a call holding time that is negatively exponentially distributed with mean call holding time of 180 seconds (the rate parameter $\mu$ of the exponential distribution is $1/180$.
 Plot the call blocking probability as a function of the call arrival rate $\lambda$.
 Consider $\lambda$ values such that $\lambda/\mu = 0.1, 0.2, 0.4, 0.8, 1.6, 3.2$.
 Plot the results.
 
 \subsection*{Solution}
+
+Given $m = 24, \rho = \lambda / \mu$.
+
+$$P_m = \frac{\rho^m \frac{1}{m!}}{\sum_{k=0}^m \rho^k \frac{1}{k!}}$$
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                title={$P_{m}$ given $m=24, \mu=1/180$},
+                xlabel={$\lambda$},
+                ylabel={$P_{m}$},
+                ymode=log,
+                xmode=log,
+                legend pos=south east,
+                ymajorgrids=true,
+                grid style=dashed,
+            ]
+            \addplot[red] table [x=lambda, y=P, col sep=comma] {plots/Q6.P_blocking_M_24.csv};
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+The code that is used to generated the graph is attached:
+
+\begin{minipage}{\linewidth}
+    \lstinputlisting[language=Python]{src/q6.py}
+\end{minipage}

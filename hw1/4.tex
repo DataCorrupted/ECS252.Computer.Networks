@@ -13,9 +13,43 @@ in the system (buffer + transmitted).
 \subsection*{Solution}
 
 \begin{enumerate}
-    \item Given $P(N) = (1-\rho)\rho^N$, $E(N) = \frac{\rho}{1-\rho}$, we can get
+    \item Given $P(N) = (1-\rho)\rho^N$, $E = \frac{\rho}{1-\rho}$, we can get
           \begin{align*}
-              Var(N) & = \sum_{k=0}^N (E(N) - k)^2 P(k) \\
+              Var(N) & = \sum_{k} (E - k)^2 P(k)                                             \\
+                     & = \sum_{k} E^2 P(k) - 2E \sum_k kP(k) + \sum_k k^2P(k)                \\
+                     & = E^2 - 2E^2  + \frac{\sum_k k^2P(k) - \rho \sum_k k^2P(k)}{1 - \rho} \\
+                     & = -E^2 + \frac{\sum_k (k+1)^2P(k+1) - \sum_k k^2P(k+1)}{1 - \rho}     \\
+                     & = -E^2 + \frac{\sum_k (2k+1)P(k+1)}{1 - \rho}                         \\
+                     & = -E^2 + \frac{\sum_k 2(k+1)P(k+1) - \sum_{k=0} P(k+1)}{1 - \rho}     \\
+                     & = -E^2 + \frac{2E - (1 - P(0))}{1 - \rho}                             \\
+                     & = -E^2 + \frac{2\rho - \rho(1-\rho)}{(1 - \rho)^2}                    \\
+                     & = -\frac{\rho^2}{(1-\rho)^2} + \frac{\rho + \rho^2}{(1 - \rho)^2}     \\
+                     & = \frac{\rho}{(1-\rho)^2}
           \end{align*}
-    \item
+    \item See \autoref{fig:q4}
+          \begin{figure}[h!]
+              \centering
+              \begin{tikzpicture}
+                  \begin{axis}[
+                          title={$E(N)$ and $SD(N)$},
+                          xlabel={$\rho$},
+                          xmax=1,
+                          xmin=0,
+                          xtick={0,0.1,0.2,...,1},
+                          legend pos=south east,
+                          ymajorgrids=true,
+                          grid style=dashed,
+                          legend pos=north west,
+                      ]
+                      \addplot[red, dotted, thick] table [x=rho, y=mean, col sep=comma] {plots/Q4.rho_mean_sd.csv};
+                      \addplot[blue, dashed, thick] table [x=rho, y=sd, col sep=comma] {plots/Q4.rho_mean_sd.csv};
+                      \legend{Mean, Standard deviation}
+                  \end{axis}
+              \end{tikzpicture}
+              \label{fig:q4}
+          \end{figure}
+    \item Because high $SD(N)$ means that the distributed applications may be highly un-balanced.
+
+          Part of the applications may be overloading while some others are sitting idle.
+          However, balanced workload is the key to distributed applications.
 \end{enumerate}

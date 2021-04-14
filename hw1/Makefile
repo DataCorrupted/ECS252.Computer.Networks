@@ -17,3 +17,4 @@ clean :
 main : $(main).tex
 	$(eval basename = $(patsubst %.tex,%,$<))
 	xelatex $(basename)
+	xelatex $(basename)

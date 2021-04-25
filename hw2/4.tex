@@ -1,0 +1,45 @@
+
+\section*{Problem 4}
+
+Read the paper titled ``Incentives Build Robustness in BitTorrent'' and write a short summary.
+Briefly describe the architecture and key algorithms that are used.
+You will find this paper in the Reference tab in Canvas.
+
+\subsection*{Solution}
+
+BitTorrent solves the download threshold problem.
+While the host server can host a file, the more the downloaders are, the slower their bandwidth would be.
+To solve this, one can use P2P sharing.
+However, there are serval challenges that BitTorrent solves.
+
+\begin{enumerate}
+    \item Peer location. It's not known to any peer where other peers are(in terms of address)
+    \item File partitioning. It's hard to figure out for each peer who has which part.
+    \item Time partitioning. Peers are not like 247 servers, they are online for little time in an un-controllable manner.
+    \item Fairness. How to prevent peers from downloading without sharing?
+\end{enumerate}
+
+BitTorrent uses a meta file ending with \textit{.torrent}(hereby referenced as torrent), which stores the metadata of the files that's been shared.
+The metadata includes piece size, number and the hash of each piece; most importantly, there is one or more urls pointing to a tracker server.
+Tracker server tracks all peers downloading torrent, including address, port, etc.
+Once a peers contacts tracker, a list of peers are returned and the peer can select anyone to contact.
+A pipeline is also setup, a piece is cut to sub-pieces and every time a sub-piece is  arrived a new request is sent, thus higher the transfer rate.
+Lastly, piece selection helps improves the systems throughput.
+There are 4 policies available:
+
+\begin{enumerate}
+    \item Strict policy, select piece by piece in the order.
+    \item Rarest first, so that there are always enough copy in case one peer goes down.
+    \item Random piece, before a new comer can start uploading, random pieces are selected.
+    \item Endgame, a chocking but slow piece will be request early on so that it won't delay the overall finishing time.
+\end{enumerate}
+
+The last remaining problem is chocking, i.e. a peer may decide not to upload.
+BitTorrent uses a simple solution: any peer would prefer upload to peers that just uploaded to them(i.e. the peers they just downloaded from.)
+Thus, peers would be inclined to share.
+However, each peer always chock 4 peers to prevent congestion, decision is made based on download rate.
+The decidion is made every 10 seconds to prevent frequent chocking/unchocking.
+A new comer noting to upload, thus everyone chocks them using previous algorithm.
+To prevent this from happening, every peer unchocks a peer for every 30 seconds, the justification is that this time would be suffice to download a piece and get going.
+Finally, it is possible one peer is chocked by everyone he is downloading from.
+BitTorrent decides it's been ``snubbed'' after one minute without a piece, it would stop uploading to them and pick other peers.

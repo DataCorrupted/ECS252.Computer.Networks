@@ -1,6 +1,35 @@
 
 \section*{Problem 3}
 
+Between the network layer and the link layer there is a packet scheduler in which one can implement dif-ferent queuing disciplines (qdisc).
+The standard one is called pfifo which stands for packet-first-in-first-out.There are also other queuing disciplines such as Codel (Control Delay) and sfq (Stochastic Fair Queueing).
+In this problem we will study an application based qdisc.
+
+We assume that the SSH application generates low volume of packets (which is typically the case froma SSH client to the SSH server).
+We assume that the FTP application generates high volume of packets.
+
+This would be the case if the end-system is uploading a large file.
+Packets arrivals follow a Poisson processwith average arrival rates $\lambda_{\text{SSH}}$, $\lambda_{\text{FTP}}$ packets per second for SSH and FTP, respectively.
+Assume that theSSH and FTP packet arrival processes are independent.
+
+We will consider two scheduling discipline
+
+\begin{enumerate}
+    \item Timer based:  SSH packets wait until the timer expires, at which time the FTP packets are buffered and all SSH packets are serviced.
+          We refer to each timer expiry as a ``dump'' and assume that a dumptakes zero time (i.e., all SSH packets are sent instantly for link level processing).
+          The time between dumps is denoted by $T$ seconds.
+    \item Number based: SSH packets wait until a certain number of them have accumulated at which time the FTP packets are buffered and all SSH packets are serviced.
+          The number of packet to accumulate fora dump is denoted by $N$.
+\end{enumerate}
+
+For the above disciplines answer the following
+
+\begin{enumerate}
+    \item For the timer based scheduling what is the expected number of SSH packets that are forwarded forlink layer processing on any dump.
+    \item For the timer based scheduling what is the probability that zero SSH packets are forwarded on anyparticular dump.
+    \item For the number based scheduling what is the expected number of SSH packets that are forwarded forlink layer processing on any dump.
+    \item For the number based scheduling what is the expected time that a randomly arriving SSH packet mustwait until service.
+\end{enumerate}
 \subsection*{Solution}
 
 \begin{enumerate}

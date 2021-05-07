@@ -1,0 +1,22 @@
+
+\section*{Problem 4}
+
+The following questions are related to the TCP protocol.
+
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item \begin{enumerate}
+              \item Slow start: 1 ~ 6.
+              \item Congestion avoidance: 17 ~ 22.
+              \item After 16th: Timeout
+              \item After 22nd: Duplicated ACKs
+              \item ~32.
+              \item ~21.
+              \item thessthresh /= 2; window size = thessthresh + 3 MSS.
+          \end{enumerate}
+
+    \item It means that you don't need an external clock or other device to sync the operations.
+    \item The additive-increase/multiplicative-decrease (AIMD) mean that if there isn't a congestion, the window size is added linearly, i.e. everytime the size is added by an amount.
+          If there is one, the size is penalized by a factor.
+\end{enumerate}

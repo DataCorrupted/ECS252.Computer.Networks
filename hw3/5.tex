@@ -1,0 +1,17 @@
+
+\section*{Problem 5}
+
+Suppose Host A and B are directly connected with a 1 Gbps link.
+There is one TCP connection betweenthe two hosts, and Host A is sending to Host B an enormous file over this connection.
+Host A can send its application data into its TCP socket at a rate as high as 120 Mbps but host B can read out of its TCP bufferat a maximum rate of 50 Mbps.
+Describe the effect of TCP flow control.
+
+\subsection*{Solution}
+
+The detailed behavior differs depending on the congestion control algorithm used.
+Therefore, we only discuss the general behavior here.
+
+Initially, A will start with small bandwidth and increase that bandwidth until 120Mbps.
+B can keep up with the speed until 50Mbps threshold is reached.
+Then congestion control kicks in and A will lower it's sending speed.
+In the end(suppose the file is not finished transmitting by then), A can send at approximately 50Mbps.

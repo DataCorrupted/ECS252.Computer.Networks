@@ -1,0 +1,55 @@
+
+\section*{Problem 1}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[auto]
+        \tikzstyle{every node} = [align=center, draw, circle]
+        \node(C){C};
+        \node[above left=1cm and 4cm of C](A){A};
+        \node[below left=1cm and 4cm of C](B){B};
+        \node[right=2cm of C](D){D};
+
+        \path (C) edge[cfgedge] node [draw=none] {$500 \text{mi}$} (D);
+        \path (A) edge[cfgedge] node [draw=none] {$2000 \text{mi}$} (C);
+        \path (B) edge[cfgedge] node [draw=none] {$2000 \text{mi}$} (C);
+    \end{tikzpicture}
+\end{figure}
+
+Figure shows a four node network.
+$C$ receives frames from $A$ and $B$ and forwards them to $D$.
+We assumethe following characteristics:
+
+\begin{itemize}
+    \item Data rate between $A$ and $C$ is $100 \text{Kbps}$.
+    \item Data rate between $B$ and $C$ is $100 \text{Kbps}$.
+    \item Propagation delay is $10\mu \text{sec/mile}$.
+    \item The node are connected through full-duplex lines.
+    \item Data frames are $1000 bits$ long.
+    \item Each data frame is acknowledged and ACKs are of negligible length.
+\end{itemize}
+
+\begin{enumerate}
+    \item Assuming that $C$ uses a stop-and-wait protocol to send packets to $D$, determine the data rate of the link between $C$ and $D$ so that $C$ does not get flooded given that 1) $A$ and $B$ are both using a slidingwindow protocol with a window size 2.
+
+    \item What will be the answer to previous part if the window size between $B$ and $C$ is increased to 6.
+\end{enumerate}
+\subsection*{Solution}
+
+\begin{enumerate}
+    \item  Time to send one packet between $AC$: $T_{\text{send}} = 1000 \text{bit} / 100 \text{Kbps} = 10 \text{ms}$
+          Single packet between $AC$:
+          $T_{AC} = 10 \mu \text{sec/mile} * 2000 \text{mi} * 2 + T_{\text{send}} = 50 \text{ms}$
+
+          Given window size of two, $C$ is receive 2 packets from $A$ every $50 \text{ms}$.
+          Given link $AC$ and $BC$ are the same and they are both sending, $C$ receives 4 packets every $50 \text{ms}$.
+
+          Since $C$ is stop-and-wait, $C$ must finish a packet in $12.5 \text{ms}$.
+          The round time between $CD$ is $T_{CD} = 10 \mu \text{sec/mile} * 500 \text{mi} * 2 = 10 \text{ms}$.
+          Thus the data needs to be send in $2.5 \text{ms}$, giving us a bandwidth of $1000 \text{bit} / 2.5 \text{ms} = 400 \text{Kbps}$
+
+    \item When the window size is 12, $T_{\text{send}}$ dominates the propagation time.
+          Thus $C$ is receiving 2 packets per $10 \text{ms}$, one from $A$ and one from $B$.
+          Meaning that $C$ needs to send out one packet in $5 \text{ms}$, which is impossible when $C$ is stop and wait.
+          This means that $C$ will always be flooded.
+\end{enumerate}

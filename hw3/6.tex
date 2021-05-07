@@ -5,3 +5,46 @@ Read the paper titled ``Congestion Avoidance and Control'' and write a short 300
 
 \subsection*{Solution}
 
+The paper focuses on congestion avoidance.
+In the introduction, the authors first established that congestion appears when equilibrium can't be reaches.
+Then they identified the reason for it.
+
+\begin{enumerate}
+    \item The connection doesn’t get to equilibrium, or
+    \item A sender injects a new packet before an old packet has exited, or
+    \item The equilibrium can’t be reached because of resource limits along the path.
+\end{enumerate}
+
+First they analysised slow start.
+By keep doubling the packets to send, the equilibrium is reached such that there are enough input packets.
+They made sure that problem (1) is solved, the connection always gets to equilibrium.
+
+Then they address problem (2).
+When assuming the implementation correctness, (2) means the timer failure.
+This can happen when the variance of the RTT is not taken into consideration.
+Thus they proposed a estimator via low pass filter:
+
+$$ R = \alpha R + (1-\alpha)M $$
+
+Where $M$ is last RTT measurement, $\alpha = 0.9$.
+Then the retransmit timeout is set to $\beta R$.
+This can still cause problems, for example, when a packet is retransmitted twice, how should we adapt the timeout?
+The author suggests that since the network acts like a linear system, and linear systems stability is exponential, we can add  exponential damping to the network.
+
+Finally, they address problem (3).
+First, resource limitations can be 1) packet damaged, or 2) packet dropped due to congestion.
+The authors recognized that 1) is less likely (<1\%) when 2) is more common case.
+However, the problem is that the network needs a signal to endpoints that congestion just happened.
+Based on (1) and (2) being solved, they proposed that timeout can be a pretty good signal.
+
+Suppose $L_i$ is the load at interval $i$, $N$ is average arrival rate, we have
+
+$$L_i = N + \gamma L_{i-1}$$
+
+When there is a congestion, $\gamma$ must be high, then we should multiplicative decrease window size to reduce the packets sent.
+When there is no congestion, $\gamma$ can be zero.
+However, it would be a mistake to multiplicative increase the window size, instead, we whould only linear increase, given that the increased amount is less than the max window size.
+
+In the end, the authors examined the work that should be done on the gateway side.
+Since congestion grows exponentially, detecting it early is important.
+The gateways should send the signal that there may be a congestion as soon as possible.

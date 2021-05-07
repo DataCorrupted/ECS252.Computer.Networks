@@ -1,0 +1,155 @@
+\documentclass{article}
+
+\title{ECS 252: Computer Networks \\ Project 1}
+\author{Yuyang(Peter) Rong \\917781535 \\ PtrRong@ucdavis.edu}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[colorlinks,linkcolor=red]{hyperref}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{subfloat}
+\usepackage{booktabs}
+\usepackage{color}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+% For listings
+% In case we need rust format, check https://github.com/denki/listings-rust
+\usepackage{listings}
+\lstset{ %
+    frame=single,
+    % numbers=left,
+    backgroundcolor=\color{white},   % choose the background color
+    basicstyle=\ttfamily\footnotesize,        % size of fonts used for the code
+    breaklines=true,                 % automatic line breaking only at whitespace
+    captionpos=b,                    % sets the caption-position to bottom
+    commentstyle=\color{mygreen},    % comment style
+    escapeinside={(*@}{@*)},         % if you want to add LaTeX within your code
+    keywordstyle=\color{blue},       % keyword style
+    stringstyle=\color{mymauve},     % string literal style
+    tabsize=1,
+    % where to put the line-numbers; possible values are (none, left, right)
+    numbers = left,
+    % how far the line-numbers are from the code
+    numbersep = 10 pt,
+    % the style that is used for the line-numbers
+    numberstyle = \ttfamily,
+    % the step between two line-numbers. If it's 1, each line will be numbered 
+    stepnumber = 1,
+}
+\usepackage{ulem}
+\usepackage{mathtools}
+
+% For autoref & section reference.
+\usepackage{hyperref}
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Section}
+\def\subsubsectionautorefname{Section}
+
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{scaled x ticks=false}
+
+\usepackage{subfigure}
+
+\begin{document}
+\maketitle
+
+\section{Overview}
+
+In this project you will simulate and analyze the basic ALOHA protocol and investigate some of the proper-ties of the binary exponential backoff algorithm of the IEEE 802.3 Ethernet protocol.
+Before you get startedyou should read Random Access Protocols Section 6.3.2 of the text.
+We will cover it in class but you shouldread ahead.
+
+In order to develop the simulation model, we will make the following assumptions:
+
+\begin{enumerate}
+    \item We will assume that time is slotted into equal length of time slots.
+          In the subsequent discussion, thelength of the time slot will be denoted by $T_s$.
+    \item We will let $N$ denote the number of hosts.
+          We will assume the hosts are identical and packets arriveto each host following a Poisson process with rate $\lambda$(pkts/sec).
+    \item Hosts can transmit only at slot boundaries.
+    \item For a new packet, the node attempts transmission in the next slot boundary.
+    \item If at a particular slot boundary there are more than one host ready to transmit, there will be a collision.When there is a collision the packet is not received by the receiver and must be re-transmitted.
+    \item How a node determines when to re-transmit depends on the algorithm.
+          We will consider differentalgorithms as discussed in the next section.
+    \item We will be plotting the throughput as a function of the arrival rate $\lambda$.
+          Throughput is defined as the number of successful transmission per time unit.
+          In the simulation, you can count the number of slots in which there is successful transmission and divided that by the total number of slots that you simulate.
+\end{enumerate}
+
+\section{Algorithms}
+
+
+We will consider the following algorithms:
+
+\begin{enumerate}
+    \item p-Persistent ALOHA: In this case each active node re-transmits in a slot with probability $p$.
+          We will consider two different values of $p$, 1)$p= 0.5$ and 2)$p=1/N$.
+    \item Binary Exponential Backoff: When hosts collide, they will schedule their re-transmission usingthe following binary exponential backoff algorithm.
+          The number of slots to delay after thenthre-transmission attempt is chosen as a uniformly distributed integer in the range $0 \le r \le 2^K$, where $K= min(n,10)$.
+    \item Linear Backoff: When hosts collide, they will schedule their re-transmission using the following linear backoff algorithm.
+          The number of slots to delay after thenthre-transmission attempt is chosenas a uniformly distributed integer in the range $0 \le r \le K$, where $K= min(n,1024)$.
+\end{enumerate}
+
+\section{Simulation Analysis}
+Extend the simulation model of the single server queue that is given in the Jupyter Notebook to model the above system.
+Based on the simulation model, obtain the following results:
+
+Plot  the  throughput  as  a  function  of $\lambda$ with  the p−Persistent  Aloha,  Binary  Exponential  Backoff algorithm as described above.
+Slot time $T_s= 1$ and number of hosts $N = 30$.
+Obtain the throughput for the values of $\lambda = 0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09$.
+
+\subsection*{Solution}
+
+Note that the simulation code is rather long and I cannot post it here.
+If you would like to examine the code and raw data, please contact me.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                title={Throughput for p-Persistent($p = 1/30$), Binary Exponential Backoff and Linear Backoff},
+                xmin=0, xmax=0.1,
+                xtick={0, 0.02, ..., 0.12},
+                ymin=0, ymax=0.6,
+                ytick={0, 0.1, ..., 0.7},
+                xlabel={$\lambda$},
+                ylabel={Throughput},
+                legend pos=south east,
+                ymajorgrids=true,
+                grid style=dashed,
+            ]
+            \addplot[red] table [x=lambda, y=throughput, col sep=comma] {plots/PPersistentBackOff(p=0.033).csv};
+            \addplot[blue] table [x=lambda, y=throughput, col sep=comma] {plots/LinearBackOff.csv};
+            \addplot[green] table [x=lambda, y=throughput, col sep=comma] {plots/BinaryExpBackOff.csv};
+            \legend{p-Persistent($p = 1/30$), Binary Exponential, Linear Backoff}
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                title={Throughput when p-Persistent($p = .5$) is used},
+                xmin=0, xmax=0.1,
+                xtick={0, 0.02, ..., 0.12},
+                ymode=log,
+                xlabel={$\lambda$},
+                ylabel={Throughput},
+                legend pos=north east,
+                ymajorgrids=true,
+                grid style=dashed,
+            ]
+            \addplot[red] table [x=lambda, y=throughput, col sep=comma] {plots/PPersistentBackOff(p=0.500).csv};
+            \legend{p-Persistent($p = .5$)}
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
+\end{document}
+\grid

@@ -50,8 +50,14 @@
 
 
 \usepackage{tikz}
+\usepackage{float}
 \usepackage{pgfplots}
-\pgfplotsset{scaled x ticks=false}
+\pgfplotsset{
+    xticklabel style={
+        /pgf/number format/fixed,
+        /pgf/number format/precision=1
+    }}
+
 
 \usepackage{subfigure}
 
@@ -103,18 +109,62 @@ Plot  the  throughput  as  a  function  of $\lambda$ with  the p−Persistent  A
 Slot time $T_s= 1$ and number of hosts $N = 30$.
 Obtain the throughput for the values of $\lambda = 0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09$.
 
+Extend the simulation model of the single server queue to model the above system.
+Based on the simulation model, obtain the following results:
+
+\begin{enumerate}
+    \item Plot  the  throughput  as  a  function  of $\lambda$ with  the p−Persistent  Aloha,  Binary  Exponential  Backoff algorithm as described above.
+          Slot time $T_s= 1$ and number of hosts $N = 30$.
+          Obtain the throughputfor ten values of $\lambda$ in the range $[0.003, 0.03]$.
+          Write a short discussion about the results.
+    \item Here are the requirements for submitting a executable version of the code.
+          Use the the following tagsfor the four different algorithms ``pp'', ``op'', ``beb'', and ``lb'' for 0.5 persistent, 1/N persistent, binary exponential backoff, and linear backoff, respectively.
+          \begin{enumerate}
+              \item Name the code: ethernet-simulation.py.
+              \item It should take 2 parameters: a) the algorithm and b) the arrival rate
+              \item It should output the throughput to 2 decimal places
+          \end{enumerate}
+
+\end{enumerate}
+
+
 \subsection*{Solution}
 
-Note that the simulation code is rather long and I cannot post it here.
-If you would like to examine the code and raw data, please contact me.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                title={Throughput when p-Persistent($p = .5$) is used},
+                xmin=0, xmax=0.033,
+                xtick={0, 0.003, ..., 0.033},
+                ymode=log,
+                xlabel={$\lambda$},
+                ylabel={Throughput},
+                legend pos=north east,
+                ymajorgrids=true,
+                grid style=dashed,
+            ]
+            \addplot[red] table [x=lambda, y=throughput, col sep=comma] {plots/PPersistentBackOff(p=0.500).csv};
+            \legend{p-Persistent($p = .5$)}
+        \end{axis}
+    \end{tikzpicture}
+\end{figure}
 
-\begin{figure}[h]
+It can be seen that p-Persistent($p = .5$) has the worth throughput.
+The best throughput is reached $\approx  0.05$, when $\lambda = 0.003$.
+It's not hard to image that once we have more than 2 stations trying to colliding at the same time, the probability the next time they would collide is still high.
+Suppose $k$ stations collided at a time slot, $t$ is the number of the stations deciding to re-transmit in the next time slot, the probability that next time there will be only one station trying to re-transmit is $P(t=1) = k2^{-k}$.
+It's also easy to tell that $P(t=0) = 2^{-k}$.
+Thus, the next time the collision rate is $P(t>1) = 1 - (k+1)2^{-k}$.
+$P(t>1) \ge 0.5$ when $k \ge 3$, meaning that once we have 3 or more stations trying to re-transmit, it would be hard to get rid of this congestions.
+
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
                 title={Throughput for p-Persistent($p = 1/30$), Binary Exponential Backoff and Linear Backoff},
-                xmin=0, xmax=0.1,
-                xtick={0, 0.02, ..., 0.12},
+                xmin=0, xmax=0.033,
+                xtick={0, 0.003, ..., 0.033},
                 ymin=0, ymax=0.6,
                 ytick={0, 0.1, ..., 0.7},
                 xlabel={$\lambda$},
@@ -132,24 +182,20 @@ If you would like to examine the code and raw data, please contact me.
 \end{figure}
 
 
-\begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-                title={Throughput when p-Persistent($p = .5$) is used},
-                xmin=0, xmax=0.1,
-                xtick={0, 0.02, ..., 0.12},
-                ymode=log,
-                xlabel={$\lambda$},
-                ylabel={Throughput},
-                legend pos=north east,
-                ymajorgrids=true,
-                grid style=dashed,
-            ]
-            \addplot[red] table [x=lambda, y=throughput, col sep=comma] {plots/PPersistentBackOff(p=0.500).csv};
-            \legend{p-Persistent($p = .5$)}
-        \end{axis}
-    \end{tikzpicture}
-\end{figure}
+We can find that the max throughput for p-Persistent($p = 1/30$) is reached when $\lambda \approx 0.01$.
+When $\lambda \le 0.01$, the throughput is rising with $\lambda$, which indicates that the system is not in the maximum payload.
+When $\lambda \ge 0.01$, the throughput can be maximized to $\approx 0.37$
+
+It's obvious that Linear backoff and Binary Backoff's throughput is better than p-Persistent($p = 1/30$).
+Using similar analysis we did above, we can find that even $p = 1/30$ did fairly good compared to $p=0.5$, but when the number of colliding stations gets high, it's still hard to deal with.
+
+Linear backoff and Binary Backoff have similar throughput when $\lambda < 0.18$, i.e. the system is not in the maximum payload.
+The best throughput binary backoff can do is $\approx 0.48$, while linear backoff has $\approx 0.49$.
+The long waiting time when collision happens can contribute to the throughput gap.
+After a fair amount time, when a collision happens, the waiting time for binary exp backoff \textbf{quickly} rises to $[0, 1024]$.
+However, for linear backoff, the waiting time can be as low as hundrends, if not tens.
+Yet, expectly, if we simulate for a longer time, ideally for infinite time, the waiting time for each station would be the same: $[0, 1024]$, then we may see the gap between the two algorithms gone.
+
 \end{document}
 \grid
+

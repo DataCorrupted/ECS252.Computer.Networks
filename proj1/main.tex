@@ -96,19 +96,12 @@ We will consider the following algorithms:
     \item p-Persistent ALOHA: In this case each active node re-transmits in a slot with probability $p$.
           We will consider two different values of $p$, 1)$p= 0.5$ and 2)$p=1/N$.
     \item Binary Exponential Backoff: When hosts collide, they will schedule their re-transmission usingthe following binary exponential backoff algorithm.
-          The number of slots to delay after thenthre-transmission attempt is chosen as a uniformly distributed integer in the range $0 \le r \le 2^K$, where $K= min(n,10)$.
+          The number of slots to delay after then the re-transmission attempt is chosen as a uniformly distributed integer in the range $0 \le r \le 2^K$, where $K= min(n,10)$.
     \item Linear Backoff: When hosts collide, they will schedule their re-transmission using the following linear backoff algorithm.
-          The number of slots to delay after thenthre-transmission attempt is chosenas a uniformly distributed integer in the range $0 \le r \le K$, where $K= min(n,1024)$.
+          The number of slots to delay after then the re-transmission attempt is chosen as a uniformly distributed integer in the range $0 \le r \le K$, where $K= min(n,1024)$.
 \end{enumerate}
 
 \section{Simulation Analysis}
-Extend the simulation model of the single server queue that is given in the Jupyter Notebook to model the above system.
-Based on the simulation model, obtain the following results:
-
-Plot  the  throughput  as  a  function  of $\lambda$ with  the p−Persistent  Aloha,  Binary  Exponential  Backoff algorithm as described above.
-Slot time $T_s= 1$ and number of hosts $N = 30$.
-Obtain the throughput for the values of $\lambda = 0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09$.
-
 Extend the simulation model of the single server queue to model the above system.
 Based on the simulation model, obtain the following results:
 
@@ -135,8 +128,8 @@ Based on the simulation model, obtain the following results:
     \begin{tikzpicture}
         \begin{axis}[
                 title={Throughput when p-Persistent($p = .5$) is used},
-                xmin=0, xmax=0.033,
-                xtick={0, 0.003, ..., 0.033},
+                %xmin=0, xmax=0.033,
+                %xtick={0, 0.003, ..., 0.033},
                 ymode=log,
                 xlabel={$\lambda$},
                 ylabel={Throughput},
@@ -163,39 +156,39 @@ $P(t>1) \ge 0.5$ when $k \ge 3$, meaning that once we have 3 or more stations tr
     \begin{tikzpicture}
         \begin{axis}[
                 title={Throughput for p-Persistent($p = 1/30$), Binary Exponential Backoff and Linear Backoff},
-                xmin=0, xmax=0.033,
-                xtick={0, 0.003, ..., 0.033},
-                ymin=0, ymax=0.6,
-                ytick={0, 0.1, ..., 0.7},
+                %xmin=0, xmax=0.033,
+                %xtick={0, 0.003, ..., 0.033},
+                ymin=0, ymax=0.8,
+                %ytick={0, 0.1, ..., 0.7},
                 xlabel={$\lambda$},
                 ylabel={Throughput},
-                legend pos=south east,
+                legend pos=outer north east,
                 ymajorgrids=true,
                 grid style=dashed,
             ]
             \addplot[red] table [x=lambda, y=throughput, col sep=comma] {plots/PPersistentBackOff(p=0.033).csv};
             \addplot[blue] table [x=lambda, y=throughput, col sep=comma] {plots/LinearBackOff.csv};
             \addplot[green] table [x=lambda, y=throughput, col sep=comma] {plots/BinaryExpBackOff.csv};
-            \legend{p-Persistent($p = 1/30$), Binary Exponential, Linear Backoff}
+            \legend{$p = 1/30$-Persistent, Binary Exponential, Linear Backoff}
         \end{axis}
     \end{tikzpicture}
 \end{figure}
 
+In the lone term, linear backoff is the second worst algorithm.
+The throughput peaked at $\approx 0.20$ and dropped to $\approx 0.15$.
+The peak can be explained by higher collision rate when the packet number rises.
 
 We can find that the max throughput for p-Persistent($p = 1/30$) is reached when $\lambda \approx 0.01$.
 When $\lambda \le 0.01$, the throughput is rising with $\lambda$, which indicates that the system is not in the maximum payload.
 When $\lambda \ge 0.01$, the throughput can be maximized to $\approx 0.37$
-
-It's obvious that Linear backoff and Binary Backoff's throughput is better than p-Persistent($p = 1/30$).
 Using similar analysis we did above, we can find that even $p = 1/30$ did fairly good compared to $p=0.5$, but when the number of colliding stations gets high, it's still hard to deal with.
 
-Linear backoff and Binary Backoff have similar throughput when $\lambda < 0.18$, i.e. the system is not in the maximum payload.
-The best throughput binary backoff can do is $\approx 0.48$, while linear backoff has $\approx 0.49$.
-The long waiting time when collision happens can contribute to the throughput gap.
-After a fair amount time, when a collision happens, the waiting time for binary exp backoff \textbf{quickly} rises to $[0, 1024]$.
-However, for linear backoff, the waiting time can be as low as hundrends, if not tens.
-Yet, expectly, if we simulate for a longer time, ideally for infinite time, the waiting time for each station would be the same: $[0, 1024]$, then we may see the gap between the two algorithms gone.
-
+Binary exponential backoff have the best throughput.
+The throughput keeps rising with the $\lambda$, peaking at $\approx 0.75$ when $\lambda = 0.04$.
+This should be the max throughput since the packets input($30 * \lambda = 1.2$) is higher than the packets output($1$).
+The outstanding throughput compared to linear backoff can be contributed to exponential growth of the waiting time.
+This made sure that we only need a few collisions before we can send out a packet.
+Instead, for linear backoff algorithm, the number of collisions needed is linear and thus more collisions are presented.
 \end{document}
 \grid
 

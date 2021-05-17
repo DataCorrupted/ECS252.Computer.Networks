@@ -29,7 +29,10 @@ class BackOffImpl:
     def notify_collision(self):
         pass
 
-    def is_done(self):
+    def done_backing_off(self):
+        pass
+
+    def reset(self):
         pass
 
 
@@ -40,7 +43,7 @@ class PPersistentBackOff(BackOffImpl):
     def __init__(self, p):
         self.p = p
 
-    def is_done(self):
+    def done_backing_off(self):
         return random.uniform(0, 1) < self.p
 
     def notify_collision(self):
@@ -52,19 +55,24 @@ class BinaryExpBackOff(BackOffImpl):
         return "BinaryExpBackOff"
 
     def __init__(self):
-        self.wait_time = 0
-        self.n = 0
+        self.reset()
 
     def notify_collision(self):
+        # We should be out of collision when we get into another.
+        assert(self.wait_time <= 0)
         self.n += 1
-        self.wait_time = random.randrange((1 << min(self.n, 10)) + 1)
+        self.wait_time = random.randint(0, 2 ** min(self.n, 10))
 
-    def is_done(self):
-        if self.wait_time < 0:
+    def done_backing_off(self):
+        if self.wait_time <= 0:
             return True
         else:
             self.wait_time -= 1
             return False
+
+    def reset(self):
+        self.n = 0
+        self.wait_time = 0
 
 
 class LinearBackOff(BackOffImpl):
@@ -72,19 +80,24 @@ class LinearBackOff(BackOffImpl):
         return "LinearBackOff"
 
     def __init__(self):
-        self.wait_time = 0
-        self.n = 0
+        self.reset()
 
     def notify_collision(self):
+        # We should be out of collision when we get into another.
+        assert(self.wait_time <= 0)
         self.n += 1
-        self.wait_time = random.randrange(min(self.n, 1024) + 1)
+        self.wait_time = random.randint(0, min(self.n, 1024))
 
-    def is_done(self):
+    def done_backing_off(self):
         if self.wait_time <= 0:
             return True
         else:
             self.wait_time -= 1
             return False
+
+    def reset(self):
+        self.n = 0
+        self.wait_time = 0
 
 
 class G:
@@ -107,17 +120,6 @@ class ChannelProcess(object):
             for station in self.stations:
                 if station.do_send():
                     senders.append(station)
-
-            '''
-            print("Time: {}.".format(self.env.now), end=" ")
-            if len(senders) != 0:
-                for sender in senders:
-                    print("{}".format(sender.id), end=" ")
-                print(" sending.")
-            else:
-                print()
-            '''
-
             if len(senders) == 1:
                 _ = senders[0].pkt_sent()
                 self.sent_num += 1
@@ -128,10 +130,10 @@ class ChannelProcess(object):
 
 
 class StationProcess(object):
-    def __init__(self, env, id, arrival_rate, back_off_impl):
+    def __init__(self, env, stn_id, arrival_rate, back_off_impl):
 
         self.env = env
-        self.id = id
+        self.id = stn_id
         self.arrival_rate = arrival_rate
         self.queue = []
         self.packet_number = 0
@@ -152,16 +154,17 @@ class StationProcess(object):
 
     def do_send(self):
         if self.collision:
-            return self.back_off_impl.is_done()
+            return self.back_off_impl.done_backing_off()
         else:
             return len(self.queue) > 0
 
     def notify_collision(self):
-        self.back_off_impl.notify_collision()
         self.collision = True
+        self.back_off_impl.notify_collision()
 
     def pkt_sent(self):
         self.collision = False
+        self.back_off_impl.reset()
         return self.queue.pop(0)
 
 
@@ -196,7 +199,7 @@ def simulate_all():
                 csv_file, fieldnames=["lambda", "throughput"])
             csv_writer.writeheader()
 
-            for arrival_rate in [.003 + a * .003 for a in range(10)]:
+            for arrival_rate in [.001 + a * .001 for a in range(40)]:
                 throughput = simulate(
                     back_off_impl, arrival_rate)
                 csv_writer.writerow(

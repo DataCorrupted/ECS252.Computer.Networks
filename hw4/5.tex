@@ -1,0 +1,28 @@
+\section*{Problem 5}
+
+In this problem you will try to derive the efficiency of a CSMA/CD-like multiple access protocol.
+We will consider a slotted system in which all the adapters are synchronized to the slot.
+The length of the slot (in seconds) is much less than the time to transmit a frame.
+Let $S$ be the length of a slot and all frames are of constant length $L=kRS$, where $R$ is the transmission rate of the channel and $k$ is a large integer.
+Suppose there are $N$ nodes each with an infinite number of frames to send.
+We also assume that $d_{prop} < S$, so that all nodes can detect collision before the end of a slot time.
+The protocol is as follows:
+
+\begin{itemize}
+    \item If for a given slot, no node has possession of the channel, all nodes contend for the channel; inparticular, each node transmits in the slot with probability $p$.
+          If exactly one node transmits in the slot, that node takes possession of the channel for the subsequent $k-1$ slots and transmits its entire frame.
+    \item If some node has possession of the channel, all other nodes refrain from transmitting until the node that possesses the channel has finished transmitting its frame.
+\end{itemize}
+
+Once this node has transmitted its frame, all node contend for the channel.
+Note that the channel alternates between two states: the productive state, which last exactly $k$ slots, and the non-productive state which lasts for a random number of number of slots.
+The channel efficiency is the ratio of $k/(k+x)$ where $x$ is the expected number of consecutive unproductive slots.
+
+\begin{enumerate}
+    \item For a fixed $N$ and $p$, determine the efficiency of this protocol.
+    \item For a fixed $N$, determine $p$ that maximizes the efficiency.
+    \item Using the $p$(which is a function of N)found in (b), determine the efficiency as $N$ approaches infinity.
+    \item Show that this efficiency approaches 1 as the frame length becomes large.
+\end{enumerate}
+
+\subsection*{Solution}

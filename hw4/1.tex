@@ -1,0 +1,13 @@
+\section*{Problem 1}
+
+Consider an end-to-end TCP connection in which the last hop is a wireless link.
+Assume that MSS is 1500 bytes.
+\begin{enumerate}
+    \item  Suppose that packet error rate in the wireless link is $10^{-3}$.
+          If the RTT is 50 msec, what is expectedthroughput of the TCP connection?
+          (See Jupyter Notebook for an analysis of TCP throughput underrandom losses.)
+    \item  What is the disadvantage of the TCP congestion control in the above scenario?
+    \item  Suppose we can leverage a link layer error correction feature that can reduce the packet error rate to $10^{-5}$.
+          However, it increases the RTT by 50 msec.
+          What will be the expected throughput of the TCP connection in this case?
+\end{enumerate}

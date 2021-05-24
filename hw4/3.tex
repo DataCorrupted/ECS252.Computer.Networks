@@ -2,7 +2,7 @@
 \section*{Problem 3}
 
 Suppose four active nodes - nodes A, B, C, and D - are competing for access to a channel using slotted ALOHA.
-Assuming that each node has a infinite number of packets to send. Each node attempts to transmitin each slot with probabilityp.
+Assuming that each node has a infinite number of packets to send. Each node attempts to transmitin each slot with probability $p$.
 The first slot is numbered 1, the second slot is numbered 2, and so on.
 
 \begin{enumerate}
@@ -13,3 +13,29 @@ The first slot is numbered 1, the second slot is numbered 2, and so on.
 \end{enumerate}
 
 \subsection*{Solution}
+
+
+\begin{enumerate}
+    \item Since each slot is independent with others, the stations are independent too, we can calculate the probability of successful transmit in anyone slot as:
+          $$P(\text{NodeSuccess}) = p(1-p)^3$$
+          \begin{align*}
+                & P(\text{A success for 1st time in slot 5}) \\
+              = & P(\text{NodeFail})^4P(\text{NodeSuccess})  \\
+              = & p(1-p)^3 (1-p(1-p)^3)^4
+          \end{align*}
+
+    \item
+          \begin{align*}
+                & P(\text{Someone success for 1st time in slot 4})       \\
+              = & {4 \choose 1}P(\text{NodeFail})^3P(\text{NodeSuccess}) \\
+              = & {4 \choose 1}(1-p(1-p)^3)^3 \cdot p(1-p)^3             \\
+              = & 4p(1-p)^3(1-p(1-p)^3)^3
+          \end{align*}
+    \item $$P(\text{ChannelSuccess}) = {4 \choose 1}p(1-p)^3$$
+          \begin{align*}
+                & P(\text{1st channel success in slot 3})           \\
+              = & P(\text{ChannelFail})^2P(\text{ChannelSuccess})   \\
+              = & (1- {4 \choose 1}p(1-p)^3)^2{4 \choose 1}p(1-p)^3 \\
+              = & 4p(1-p)^3(1-4p(1-p)^3)^2
+          \end{align*}
+\end{enumerate}

@@ -3,11 +3,28 @@
 Consider an end-to-end TCP connection in which the last hop is a wireless link.
 Assume that MSS is 1500 bytes.
 \begin{enumerate}
-    \item  Suppose that packet error rate in the wireless link is $10^{-3}$.
-          If the RTT is 50 msec, what is expectedthroughput of the TCP connection?
-          (See Jupyter Notebook for an analysis of TCP throughput underrandom losses.)
-    \item  What is the disadvantage of the TCP congestion control in the above scenario?
-    \item  Suppose we can leverage a link layer error correction feature that can reduce the packet error rate to $10^{-5}$.
-          However, it increases the RTT by 50 msec.
-          What will be the expected throughput of the TCP connection in this case?
+      \item  Suppose that packet error rate in the wireless link is $10^{-3}$.
+            If the RTT is 50 msec, what is expected throughput of the TCP connection?
+            (See Jupyter Notebook for an analysis of TCP throughput underrandom losses.)
+      \item  What is the disadvantage of the TCP congestion control in the above scenario?
+      \item  Suppose we can leverage a link layer error correction feature that can reduce the packet error rate to $10^{-5}$.
+            However, it increases the RTT by 50 msec.
+            What will be the expected throughput of the TCP connection in this case?
+\end{enumerate}
+
+\begin{enumerate}
+      \item Using the analysis in hte notebook, we have $L = 10^{-3}$, $\text{MSS} = 1500 \text{bytes}$, $\text{RTT} = 50 \text{ms}$
+            Thus we have:
+            $$ \nu = \frac{1.22 * \text{MSS}}{\text{RTT} \sqrt{L}} = \frac{1.22 * 1500}{.05 * \sqrt{10^{-3}}} \text{bps} \approx 1.16 \text{Mbps}$$
+
+      \item Congestion control kicked in when there is no congestion, slows down the whole link.
+
+            Congestion control algorithm is based on the assumption that packet loss is rare, thus used packet loss to directly indicate a congestion.
+            However, this asusmption is not true in wireless connection when packet loss is more often than cables.
+            This false positive slowed the throughput of the whole link.
+
+      \item Using the analysis in hte notebook, we have $L = 10^{-5}$, $\text{MSS} = 1500 \text{bytes}$, $\text{RTT} = 100 \text{ms}$
+            Thus we have:
+            $$ \nu = \frac{1.22 * \text{MSS}}{\text{RTT} \sqrt{L}} = \frac{1.22 * 1500}{.1 * \sqrt{10^{-5}}} \text{bps} \approx 5.79 \text{Mbps}$$
+
 \end{enumerate}

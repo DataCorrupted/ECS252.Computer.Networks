@@ -5,3 +5,7 @@ Suppose nodes A and B are on the same 10 Mbps broadcast channel, and the propaga
 Since Ethernet does not use ACK, what is the minimum size of the Ethernet frame so that the sender can know the outcome of the transmission.
 
 \subsection*{Solution}
+
+The minimum size of a frame should be doubled to 490 bits.
+
+This made sure that there is enough time for "round trip", so when A and B are transmitting with collision, both parties can know the existance of the collision.

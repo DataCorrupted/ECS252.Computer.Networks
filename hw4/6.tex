@@ -7,3 +7,33 @@ The transition from state 1 to state 2 is with rate $\alpha$ while the transitio
 What is mean service time and the Coefficient of Variation of the service time?
 
 \subsection*{Solution}
+
+Consider the states we have:
+
+\begin{align*}
+    \alpha p_1 & = \beta p_2 \\
+    p_1  + p_2 & = 1
+\end{align*}
+
+Thus $$p_1 = \frac{\beta}{\alpha + \beta}, p_2 = \frac{\alpha}{\alpha + \beta}$$
+
+Therefore, the probability density of the service time is:
+
+$$ f(t) = p_1\mu_1 e^{\mu_1t} + p_2\mu_2 e^{\mu_2t} $$
+
+Thus the expected service time:
+
+$$E(T) = p_1E_{\text{State1}}(T)+p_2E_{\text{State2}}(T) = p_1/\mu_1 + p_2/\mu_2 = \frac{\mu_2\beta + \mu_1\alpha}{\mu_1\mu_2(\alpha+\beta)} $$
+
+The variance of the service time:
+
+\begin{align*}
+    Var(T) & = E(T^2) - E(T)^2                                                                                                              \\
+           & = \int_{\mathbb{R}} t^2f(t) - E(T)^2                                                                                           \\
+           & = \int_{\mathbb{R}} t^2p_1\mu_1 e^{\mu_1t}  + \int_{\mathbb{R}} t^2p_2\mu_2 e^{\mu_2t} - E(T)^2                                \\
+           & = p_1E_{\text{State1}}(T^2)+p_2E_{\text{State2}}(T^2)   - E(T)^2                                                               \\
+           & = \frac{2p_1}{\mu_1^2} + \frac{2p_2}{\mu_2^2} - (\frac{p_1}{\mu_1} + \frac{p_2}{\mu_2})^2                                      \\
+           & = \frac{p_1(2 - p_1)}{\mu_1^2} + \frac{p_2(2 - p_2)}{\mu_2^2} - \frac{2p_1p_2}{\mu_1\mu_2}                                     \\
+           & = \frac{\beta(2\alpha + \beta)\mu_2^2 + \alpha(\alpha+2\beta)\mu_1^2 - 2\alpha\beta\mu_1\mu_2}{(\alpha+\beta)^2(\mu_1\mu_2)^2} \\
+           & = \frac{(\alpha\mu_1 - \beta\mu_2)^2 + 2\alpha\beta(\mu_1^2 + \mu_2^2)}{(\alpha+\beta)^2(\mu_1\mu_2)^2}
+\end{align*}

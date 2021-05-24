@@ -3,19 +3,32 @@
 
 In a slotted ring network, a fixed number of fixed-length slots circulate continuously on the ring.
 Each slot contains a leading bit to designate that the slot is empty or full.
-A station wishing to transmit waits untilan empty slot arrives, marks the slot full, and inserts a frame of data as the slot goes by.
+A station wishing to transmit waits until an empty slot arrives, marks the slot full, and inserts a frame of data as the slot goes by.
 The slot makes a complete round-trip, to be marked empty again by the station that marked it full.
-A station is said to beactive if it has one or more frame to transmit. 
+A station is said to be active if it has one or more frame to transmit.
 Consider a slotted ring network of length 10 Km with a daterate of 10 Mbps and 500 repeaters each of which introduces a 1-bit delay.
-There are 25 stations and eachstation also introduces a 1 bit delay.
+There are 25 stations and each station also introduces a 1 bit delay.
 Each slot contains room for one source address byte, one destinationaddress byte, two data bytes, and five control bits for a total of 37 bits.
 Assume that the propagation delayis 10 microseconds per kilometer.
 
 \begin{enumerate}
     \item How many slots can be there on the ring?
-    \item Let frame transfer time denote the time to transfer a frame to a destination station from the instant anempty slot arrives at an active source station. What is the average frame transfer time?
+    \item Let frame transfer time denote the time to transfer a frame to a destination station from the instant an empty slot arrives at an active source station. What is the average frame transfer time?
     \item Let medium access time denote the time that an active station has to wait to obtain an empty slot.
-          If pis the probability that a slot is empty, determine the average medium access time when $p = 0.2$.
+          If $p$ is the probability that a slot is empty, determine the average medium access time when $p = 0.2$.
 \end{enumerate}
 
 \subsection*{Solution}
+
+\begin{enumerate}
+    \item $ 10 \text{Mbps} * 10 \text{km} * .01 \text{ms/km} = 1 \text{Kb}$.
+
+          Thus the max slots should be: $1 \text{Kb} / 37 bits \approx 27$
+
+    \item $\text{RTT} = 0.01 \text{ms/km} * 10 \text{km} + 525 \text{bits} / 10 \text{Mbps} = 152.5 \mu\text{s}$
+
+    \item The expected slots to wait is:
+          $$ E(S) = \sum_k k(1-p)^kp = 1-p = 0.8 $$
+          Thus the waiting time would be:
+          $$E(T) = \frac{E(s) * 38 \text{bits}}{10\text{Mbps})} = 3.04 \mu\text{s}$$
+\end{enumerate}

@@ -26,3 +26,34 @@ The channel efficiency is the ratio of $k/(k+x)$ where $x$ is the expected numbe
 \end{enumerate}
 
 \subsection*{Solution}
+
+\begin{enumerate}
+    \item The probability of successfully get the channel:
+          $$P = {N \choose 1}p(1-p)^{N-1}$$
+          The probability function of the number of consecutive unproductive:
+          $$f(x) = (1-P)^{x-1}P$$
+          Thus the expected waiting unproductive slots is:
+          $$E(X) = \sum_s^N sf(s) = \frac{P}{1-P}\sum_s^N s(1-P)^s = \frac{P}{1-P}\frac{1-P}{P^2} = 1/P $$
+          Thus the efficiency is:
+          $$ \frac{k}{k+x} = \frac{k}{k+1/P} = \frac{Npk(1-p)^{N-1}}{Npk(1-p)^{N-1} + 1}$$
+
+    \item To maximize the efficiency, is to minimize $1/P$, i.e. maximize $P$.
+          For fixed $N$ we have: $$P(p) = Np(1-p)^{N-1}, p \in [0, 1]$$
+          Taking log would affect the maximuze point of this function:
+          $$L(p) = \log P(p) = \log N + \log p + (N-1)\log (1-p), p \in [0, 1]$$
+          Taking the derivitive:
+          $$L'(p) = \frac{1}{p} - \frac{N-1}{1-p}$$
+          The zero point of $L'(p) = 0$ is $p = \frac{1}{N}$.
+          Therefore when $p \in [0, \frac{1}{N}], L'(p) > 0, L(p)$ increases, $P(p)$ increases.
+          When $p \in [\frac{1}{N}, 1], L'(p) < 0, L(p)$ decreases, $P(p)$ decreases.
+
+          Thus $P(p)$ is maximuzed when $p = \frac{1}{N}$, $P(\frac{1}{N}) = (\frac{N-1}{N})^{N-1}$
+
+    \item Using results in 1) and 2), when $p = \frac{1}{N}$, we have:
+          $$\lim_{N \rightarrow \infty} \frac{1}{P} = \lim_{N \rightarrow \infty} (\frac{N}{N-1})^{N-1} = 1$$
+          Thus $$\lim_{N \rightarrow \infty} \frac{k}{k + 1/P} = \frac{k}{k+1}$$
+
+    \item Frame length become large implies that $k \rightarrow \infty$.
+          $1/P$ is a finite number, thus the efficiency can be expressed as:
+          $$ \lim_{k \rightarrow \infty} \frac{k}{k + 1/P} = 1$$
+\end{enumerate}

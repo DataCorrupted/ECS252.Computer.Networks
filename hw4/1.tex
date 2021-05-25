@@ -15,7 +15,7 @@ Assume that MSS is 1500 bytes.
 \begin{enumerate}
       \item Using the analysis in hte notebook, we have $L = 10^{-3}$, $\text{MSS} = 1500 \text{bytes}$, $\text{RTT} = 50 \text{ms}$
             Thus we have:
-            $$ \nu = \frac{1.22 * \text{MSS}}{\text{RTT} \sqrt{L}} = \frac{1.22 * 1500}{.05 * \sqrt{10^{-3}}} \text{bps} \approx 1.16 \text{Mbps}$$
+            $$ \nu = \frac{1.22 * \text{MSS}}{\text{RTT} \sqrt{L}} = \frac{1.22 * 1500 * 8}{.05 * \sqrt{10^{-3}}} \text{bps} \approx 9.259 \text{Mbps}$$
 
       \item Congestion control kicked in when there is no congestion, slows down the whole link.
 
@@ -25,6 +25,6 @@ Assume that MSS is 1500 bytes.
 
       \item Using the analysis in hte notebook, we have $L = 10^{-5}$, $\text{MSS} = 1500 \text{bytes}$, $\text{RTT} = 100 \text{ms}$
             Thus we have:
-            $$ \nu = \frac{1.22 * \text{MSS}}{\text{RTT} \sqrt{L}} = \frac{1.22 * 1500}{.1 * \sqrt{10^{-5}}} \text{bps} \approx 5.79 \text{Mbps}$$
+            $$ \nu = \frac{1.22 * \text{MSS}}{\text{RTT} \sqrt{L}} = \frac{1.22 * 1500 * 8}{.1 * \sqrt{10^{-5}}} \text{bps} \approx 46.296 \text{Mbps}$$
 
 \end{enumerate}

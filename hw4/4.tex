@@ -12,23 +12,23 @@ Each slot contains room for one source address byte, one destinationaddress byte
 Assume that the propagation delayis 10 microseconds per kilometer.
 
 \begin{enumerate}
-    \item How many slots can be there on the ring?
-    \item Let frame transfer time denote the time to transfer a frame to a destination station from the instant an empty slot arrives at an active source station. What is the average frame transfer time?
-    \item Let medium access time denote the time that an active station has to wait to obtain an empty slot.
-          If $p$ is the probability that a slot is empty, determine the average medium access time when $p = 0.2$.
+      \item How many slots can be there on the ring?
+      \item Let frame transfer time denote the time to transfer a frame to a destination station from the instant an empty slot arrives at an active source station. What is the average frame transfer time?
+      \item Let medium access time denote the time that an active station has to wait to obtain an empty slot.
+            If $p$ is the probability that a slot is empty, determine the average medium access time when $p = 0.2$.
 \end{enumerate}
 
 \subsection*{Solution}
 
 \begin{enumerate}
-    \item $ 10 \text{Mbps} * 10 \text{km} * .01 \text{ms/km} = 1 \text{Kb}$.
+      \item $ 10 \text{Mbps} * 10 \text{km} * .01 \text{ms/km} = 1 \text{Kb}$.
 
-          Thus the max slots should be: $1 \text{Kb} / 37 bits \approx 27$
+            Thus the max slots should be: $1 \text{Kb} / 37 \text{bits} \approx 27$
 
-    \item $\text{RTT} = 0.01 \text{ms/km} * 10 \text{km} + 525 \text{bits} / 10 \text{Mbps} = 152.5 \mu\text{s}$
+      \item $\text{RTT} = 0.01 \text{ms/km} * 10 \text{km} + 525 \text{bits} / 10 \text{Mbps} = 152.5 \mu\text{s}$
 
-    \item The expected slots to wait is:
-          $$ E(S) = \sum_k k(1-p)^kp = 1-p = 0.8 $$
-          Thus the waiting time would be:
-          $$E(T) = \frac{E(s) * 38 \text{bits}}{10\text{Mbps})} = 3.04 \mu\text{s}$$
+      \item The expected slots to wait is:
+            $$ E(S) = \sum_k k(1-p)^kp = 1-p = 0.8 $$
+            Thus the waiting time would be:
+            $$E(T) = \frac{E(s) * 38 \text{bits}}{10\text{Mbps}} = 3.04 \mu\text{s}$$
 \end{enumerate}

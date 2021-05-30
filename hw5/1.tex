@@ -1,0 +1,22 @@
+\section*{Problem 1}
+
+Consider the scenario in which the capacity of the switch fabric is larger than the aggregate capacity of the input ports.
+This implies that there is no input queueing.
+We consider one of the output ports and model itusing a simple M/M/1 queue.
+This implies that we consider that packet arrivals follows a Poisson processwith rate $\lambda$ pkt/sec and the service time to be negative exponential with rate $\mu$ pkts/sec.
+We will assume thatthe buffer size (in number of packets) is B.
+
+\begin{enumerate}
+      \item Derive an expression for the probability of a packet drop.
+      \item We consider the case that the packets are carrying streaming video data using TCP as the transportprotocol.
+            We will assume:
+            \begin{enumerate}
+                  \item segment size is 1500 bytes;
+                  \item the round-trip time (RTT) is 200ms;
+                  \item the outgoing link data rate is 1 Mbps;
+                  \item ignore TCP slow-start.
+            \end{enumerate}
+            What is the minimum buffer sizerequired to guarantee a QoS of end-to-end throughput of 600 Kbps?
+\end{enumerate}
+
+\subsection*{Solution}

@@ -1,0 +1,33 @@
+
+\section*{Problem 3}
+Consider the network shown in Figure 2 and assume that each node initially knows the cost to each of its neighbors.
+Consider the distance vector algorithm and consider the synchronous version that we discussed in class.
+Answer the following questions
+
+\begin{enumerate}
+      \item Give the initial distance table of all the nodes.
+      \item In the first round of exchange of distance vectors many distance vectors will node Z receive?
+      \item Determine the distance table of node Z after the first round of exchange of distance vectors among
+            the nodes.
+\end{enumerate}
+
+\begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+            \tikzstyle{every node} = [align=center, draw, circle, node distance = 2cm]
+            \node(x){x};
+            \node[right of=x](y){y};
+            \node[below right of=x](w){w};
+            \node[right of=w](z){z};
+
+            \path (x) edge node[draw=none, below](){2} (w);
+            \path (x) edge node[draw=none, above](){5} (y);
+            \path (w) edge node[draw=none, above left](){2} (y);
+            \path (w) edge node[draw=none, below](){4} (z);
+            \path (y) edge node[draw=none, above](){2} (z);
+      \end{tikzpicture}
+      \caption{A four node network}
+\end{figure}
+
+\subsection*{Solution}
+

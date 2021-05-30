@@ -1,0 +1,37 @@
+\section*{Problem 2}
+
+Consider the network fragment shown in Figure 1
+$x$ has two attached neighbours, $w$ and $y$
+$w$ has aminimum-cost path to destination $u$ (not shown) of 5 and $y$ has a minimum-cost path to $u$of 6
+The completepath from $w$ and $y$ to $u$ (and between $w$ and $y$) are not shown
+All link costs in the network have strictlypositive integer values.
+
+\begin{enumerate}
+    \item Give $x$ distance vector for destination $w$, $y$, and $u$.
+    \item Give a link cost change for either $c(x, w)$ or $c(x, y)$ such that $x$ will inform its neighbor of a newminimum cost path to $u$ as a result of executing the distance-vector algorithm.
+    \item Give a link-cost change for either $c(x, w)$ or $c(x, y)$ such that $x$ will not inform its neighbors of a new minimum cost path to $u$ as a result of executing the distance-vector algorithm.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \tikzstyle{every node} = [align=center, draw, circle, node distance = 2cm]
+        \node(x){$x$};
+        \node[above right of=x](w){$w$};
+        \node[above right of=w, draw=none](w1){};
+        \node[above of=w, draw=none](w2){};
+        \node[right of=x](y){$y$};
+        \node[above right of=y, draw=none](y1){};
+        \node[right of=y, draw=none](y2){};
+
+        \path (x) edge node[draw=none, above](){1} (w);
+        \path (x) edge node[draw=none, below](){4} (y);
+        \path (w) edge (w1);
+        \path (w) edge (w2);
+        \path (y) edge (y1);
+        \path (y) edge (y2);
+    \end{tikzpicture}
+    \caption{Fragment of a network}
+\end{figure}
+
+\subsection*{Solution}

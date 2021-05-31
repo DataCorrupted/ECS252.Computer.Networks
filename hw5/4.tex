@@ -36,3 +36,20 @@ Show how the algorithm works by using a table similar to the table in Table 4.3 
 \end{figure}
 
 \subsection*{Solution}
+
+\begin{table}[H]
+      \centering
+      \begin{tabular}{llllllll}
+            Iteration & N'      & y               & z               & w               & u               & v               & t               \\
+            1         & x       & (6, x)          & (8, x)          & (6, x)          & $\infty$        & \textbf{(3, x)} & $\infty$        \\
+            2         & xv      & \textbf{(6, x)} & (8, x)          & (6, x)          & (6, v)          &                 & (7, v)          \\
+            3         & xvy     &                 & (8, x)          & \textbf{(6, x)} & (6, v)          &                 & (7, v)          \\
+            4         & xvyw    &                 & (8, x)          &                 & \textbf{(6, v)} &                 & (7, v)          \\
+            5         & xvywu   &                 & (8, x)          &                 &                 &                 & \textbf{(7, v)} \\
+            5         & xvywuv  &                 & \textbf{(8, x)} &                 &                 &                 &                 \\
+            5         & xvywuvz &                 &                 &                 &                 &                 &                 \\
+      \end{tabular}
+      \caption{
+            ``$\infty$'': infinity length, as the actual min length is not known yet.
+      }
+\end{table}

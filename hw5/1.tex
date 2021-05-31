@@ -3,12 +3,12 @@
 Consider the scenario in which the capacity of the switch fabric is larger than the aggregate capacity of the input ports.
 This implies that there is no input queueing.
 We consider one of the output ports and model itusing a simple M/M/1 queue.
-This implies that we consider that packet arrivals follows a Poisson processwith rate $\lambda$ pkt/sec and the service time to be negative exponential with rate $\mu$ pkts/sec.
-We will assume thatthe buffer size (in number of packets) is B.
+This implies that we consider that packet arrivals follows a Poisson process with rate $\lambda$ pkt/sec and the service time to be negative exponential with rate $\mu$ pkts/sec.
+We will assume that the buffer size (in number of packets) is B.
 
 \begin{enumerate}
       \item Derive an expression for the probability of a packet drop.
-      \item We consider the case that the packets are carrying streaming video data using TCP as the transportprotocol.
+      \item We consider the case that the packets are carrying streaming video data using TCP as the transport protocol.
             We will assume:
             \begin{enumerate}
                   \item segment size is 1500 bytes;
@@ -16,7 +16,42 @@ We will assume thatthe buffer size (in number of packets) is B.
                   \item the outgoing link data rate is 1 Mbps;
                   \item ignore TCP slow-start.
             \end{enumerate}
-            What is the minimum buffer sizerequired to guarantee a QoS of end-to-end throughput of 600 Kbps?
+            What is the minimum buffer size required to guarantee a QoS of end-to-end throughput of 600 Kbps?
 \end{enumerate}
 
 \subsection*{Solution}
+
+\begin{enumerate}
+      \item For this system we have:
+            \begin{align*}
+                  \lambda p_{k} = \mu p_{k+1} \\
+                  \sum_{k=0}^{B+1} p_k = 1
+            \end{align*}
+            Let's denote $\rho = \lambda / \mu$, olving this gives us:
+            \begin{align*}
+                  p_0 & = \frac{1-\rho}{1-\rho^{B+2}} \\
+                  p_k & = \rho^kp_0                   \\
+            \end{align*}
+            Therefore, the packet drop probability is the probability where the queue is full, i.e.
+
+            $$P(\text{drop}) = p_{B+1} = \frac{\rho^{B+1}(1-\rho)}{1 - \rho^{B+2}}$$
+
+      \item We can express throughput as:
+            $$\nu = \frac{1.22 * 1500 * 8 \text{bits}}{0.2 \text{s} * \sqrt{p_{B+1}}} = 600 Kbps $$
+            $$p_{B+1} = .122^2 = .14884$$
+
+            Given ipnut, i.e. throughput is 600 Kbps, we have:
+            \begin{align*}
+                  \lambda & = \frac{600 \text{Kbps}}{1500 \text{bytes/pkt}}                                                              \\
+                  \mu     & = \frac{1 \text{Mbps}}{1500 \text{bytes/pkt}}                                                                \\
+                  \rho    & = \frac{ \frac{600 \text{Kbps}}{1500 \text{bytes/pkt}}}{ \frac{1 \text{Mbps}}{1500 \text{bytes/pkt}} } = 0.6 \\
+            \end{align*}
+
+            Therefore, we have:
+
+            $$p_{B+1} = \frac{\rho^{B+1}(1-\rho)}{1 - \rho^{B+2}} = .14884$$
+            $$\rho^B = \frac{.14884}{.14884 \rho^2 + \rho - \rho^2}$$
+            $$B = \log_\rho^\frac{.14884}{.14884 \rho^2 + \rho - \rho^2} \approx 5.486$$
+
+            Therefore, $B > 5.486$ to guarantee a QoS of 600 Kbps,  i.e. $B$ is at least 6.
+\end{enumerate}

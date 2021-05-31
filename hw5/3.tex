@@ -31,3 +31,73 @@ Answer the following questions
 
 \subsection*{Solution}
 
+\begin{enumerate}
+      \item The initial table is shown below:
+            \begin{table}[H]
+                  \centering
+                  \begin{tabular}{lllll}
+                        From $x$ & Via $x$ & Via $y$  & Via $z$ & Via $w$  \\
+                        To $x$   & -       & -        & -       & -        \\
+                        To $y$   & -       & 5        & NA      & $\infty$ \\
+                        To $z$   & -       & $\infty$ & NA      & $\infty$ \\
+                        To $w$   & -       & $\infty$ & NA      & 2
+                  \end{tabular}
+
+                  \vspace{5mm}
+
+                  \begin{tabular}{lllll}
+                        From $y$ & Via $x$  & Via $y$ & Via $z$  & Via $w$  \\
+                        To $x$   & 5        & -       & $\infty$ & $\infty$ \\
+                        To $y$   & -        & -       & -        & -        \\
+                        To $z$   & $\infty$ & -       & 2        & $\infty$ \\
+                        To $w$   & $\infty$ & -       & $\infty$ & 2
+                  \end{tabular}
+
+                  \vspace{5mm}
+
+                  \begin{tabular}{lllll}
+                        From $z$ & Via $x$ & Via $y$  & Via $z$ & Via $w$  \\
+                        To $x$   & NA      & $\infty$ & -       & $\infty$ \\
+                        To $y$   & NA      & 2        & -       & $\infty$ \\
+                        To $z$   & -       & -        & -       & -        \\
+                        To $w$   & NA      & $\infty$ & -       & 4
+                  \end{tabular}
+
+                  \vspace{5mm}
+
+                  \begin{tabular}{lllll}
+                        From $w$ & Via $x$  & Via $y$  & Via $z$  & Via $w$ \\
+                        To $x$   & 2        & $\infty$ & $\infty$ & -       \\
+                        To $y$   & $\infty$ & 2        & $\infty$ & -       \\
+                        To $z$   & $\infty$ & $\infty$ & 4        & -       \\
+                        To $w$   & -        & -        & -        & -
+                  \end{tabular}
+
+
+                  \caption{
+                        ``-'': Connect to self, not applicable cell.
+                        ``NA'': not directly connected, i.e. not neighbors.
+                        ``$\infty$'': infinity length, as the actual min length is not known yet.
+                  }
+            \end{table}
+
+      \item Two. Since at the first round $x$ has no idea how to connect to $z$.
+      \item The table of $z$ after the first round is:
+            \begin{table}
+                  \centering
+                  \begin{tabular}{lllll}
+                        From $z$ & Via $x$ & Via $y$ & Via $z$ & Via $w$ \\
+                        To $x$   & NA      & 7       & -       & 6       \\
+                        To $y$   & NA      & 2       & -       & 6       \\
+                        To $z$   & -       & -       & -       & -       \\
+                        To $w$   & NA      & 4       & -       & 4
+                  \end{tabular}
+                  \caption{
+                        ``-'': Connect to self, not applicable cell.
+                        ``NA'': not directly connected, i.e. not neighbors.
+                        ``$\infty$'': infinity length, as the actual min length is not known yet.
+                  }
+            \end{table}
+
+\end{enumerate}
+
